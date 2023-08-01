@@ -1,0 +1,54 @@
+.token {
+  display: flex;
+  flex-direction: column;
+  width: 97%;
+  margin: auto;
+  padding: 2rem 0 2rem 0;
+  gap: 2rem;
+}
+
+.token-info {
+  display: flex;
+  gap: 2rem;
+}
+
+.token-ranking {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 2rem;
+}
+
+.token-chart {
+  width: 100%;
+}
+
+.token-info__text {
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.token-info__text--name {
+  flex-grow: 3;
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: grid;
+  place-items: center;
+}
+
+.token-info__number {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.token-info__number--market-cap,
+.token-info__number--total-supply,
+.token-info__number--max-supply,
+.token-info__number--circulating-supply {
+  font-weight: bold;
+}
