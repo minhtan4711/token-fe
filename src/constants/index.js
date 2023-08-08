@@ -11,8 +11,8 @@ export const DAYS_31 = 31 * A_DAY
 export const DAYS_100 = 100 * A_DAY
 export const A_YEAR = 365 * A_DAY
 
-export const START_TIME = 1681931734
-export const END_TIME = START_TIME + DAYS_100
+export const START_TIME = 1681930800
+export const END_TIME = 1683842400
 
 export const API_URL = 'http://127.0.0.1:8000'
 
