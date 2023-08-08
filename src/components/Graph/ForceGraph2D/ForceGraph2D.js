@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TransferModal from "../../Modal/Modal";
 import { ForceGraph2D } from "react-force-graph";
-import * as d3 from "d3-force";
 import "./ForceGraph2D.css";
 
 const DynamicGraph = ({ data }) => {
@@ -69,7 +68,7 @@ const DynamicGraph = ({ data }) => {
         }
 
         if (node.group === 'DAPP' && images[node.id]) {
-            const radius = nodeVal(node) * 3;
+            const radius = nodeVal(node) * 2;
             ctx.save();
             ctx.beginPath();
             ctx.arc(node.x, node.y, radius, 0, Math.PI * 2, true);

@@ -5,11 +5,14 @@ import TopTable from "../../components/Table/Top/TopTable";
 import Loading from "../../components/Loading/Loading";
 import { useSelector } from "react-redux";
 import LineChart from "../../components/HighChart/LineChart";
-import { START_TIME, END_TIME, API_URL } from "../../constants";
+import { START_TIME, API_URL, DAYS_100 } from "../../constants";
 
 function TokenDetails() {
 	const { address } = useSelector((state) => state.token);
 	const [isLoading, setIsLoading] = useState(true);
+
+	const startTime = START_TIME;
+	const endTime = START_TIME + DAYS_100;
 
 	const [tokenData, setTokenData] = useState(null);
 	const [tokenInfo, setTokenInfo] = useState(null);
@@ -23,7 +26,7 @@ function TokenDetails() {
 			try {
 				// Fetch token data
 				const tokenDataResponse = await fetch(
-					`https://api.coingecko.com/api/v3/coins/binance-smart-chain/contract/${address}/market_chart/range?vs_currency=usd&from=${START_TIME}&to=${END_TIME}`
+					`https://api.coingecko.com/api/v3/coins/binance-smart-chain/contract/${address}/market_chart/range?vs_currency=usd&from=${startTime}&to=${endTime}`
 				);
 				const tokenData = await tokenDataResponse.json();
 				const formattedTokenData = tokenData.prices.map((item) => [
@@ -71,7 +74,7 @@ function TokenDetails() {
 		};
 
 		fetchData();
-	}, [address]);
+	}, [address, endTime, startTime]);
 
 	return (
 		<Layout>
