@@ -131,11 +131,12 @@ function TokenTransferTimeline() {
 			setIsLoading(true);
 			const fetchData = async () => {
 				try {
+					const dappList = dappId.join(",");
 					const responseRadar = await fetch(
 						`${API_URL}/token-transfer/${address}?start_timestamp=${prevTimestamp}&end_timestamp=${nextTimestamp}`
 					);
 					const responseGraph = await fetch(
-						`${API_URL}/graph-data/${address}?start_timestamp=${prevTimestamp}&end_timestamp=${nextTimestamp}&dapp_id=${dappId}`
+						`${API_URL}/graph-data/${address}?start_timestamp=${prevTimestamp}&end_timestamp=${nextTimestamp}&dapp_id=${dappList}`
 					);
 					const responseDapps = await fetch(
 						`${API_URL}/dapp-at-timestamp/${address}?start_timestamp=${prevTimestamp}&end_timestamp=${nextTimestamp}`
@@ -199,7 +200,7 @@ function TokenTransferTimeline() {
 								<div className="container-table">
 									{dapps && (
 										<TopTable
-											width={200}
+											width={400}
 											name="Dapps"
 											headers={["image", "id", "name"]}
 											rows={dapps}

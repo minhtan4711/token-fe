@@ -14,11 +14,16 @@ const dappSlice = createSlice({
         state.dappId.push(id);
       }
     },
+    removeDappPerTimestamp: (state) => {
+      if (state.dappId.length > 1) {
+        state.dappId = [state.dappId[0]];
+      }
+    },
     clearDapp: (state) => {
       state.dappId = [];
     }
   }
 })
 
-export const { selectDapp, clearDapp } = dappSlice.actions;
+export const { selectDapp, clearDapp, removeDappPerTimestamp } = dappSlice.actions;
 export default dappSlice.reducer;

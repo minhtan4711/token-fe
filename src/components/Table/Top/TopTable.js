@@ -1,8 +1,16 @@
 import React from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import { BSCSCAN_TX_URL, BSCSCAN_ADDRESS_URL } from "../../../constants";
+import { useDispatch } from "react-redux";
+import { selectDapp } from "../../../features/dapp/dappSlice";
 
 const TopTable = ({ headers, rows, name, width }) => {
+  const dispatch = useDispatch();
+
+  const handleRowClickDappId = (id) => {
+    dispatch(selectDapp({ id }));
+  }
+
   const columnNames = {
     transaction_hash: 'Transaction Hash',
     value: 'Value',
@@ -47,22 +55,24 @@ const TopTable = ({ headers, rows, name, width }) => {
         </TableHead>
         <TableBody>
           {rows.map((row, index) => (
-            <TableRow key={row.transaction_hash}>
+            <TableRow style={{
+              cursor: 'pointer',
+              transition: 'transform 0.3s, boxShadow 0.3s',
+            }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.03)';
+                e.currentTarget.style.boxShadow = '0px 4px 10px rgba(0, 0, 0, 0.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.boxShadow = 'none';
+              }} key={row.transaction_hash} onClick={() => handleRowClickDappId(row.id)}>
               <TableCell>#{index + 1}</TableCell>
               {headers.map((header) => renderTableCell(header, row[header]))}
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      {/* <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      /> */}
     </TableContainer>
   );
 }

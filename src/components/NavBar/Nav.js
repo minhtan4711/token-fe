@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
 import { clearToken } from "../../features/token/tokenSlice";
 import { clearDapp } from "../../features/dapp/dappSlice";
+import { clearTimestamp } from "../../features/timestamp/timestampSlice";
 import { useNavigate } from "react-router-dom";
 
 
@@ -22,6 +23,7 @@ function Nav() {
     navigate('/');
     dispatch(clearToken());
     dispatch(clearDapp());
+    dispatch(clearTimestamp());
   }
 
   return (
