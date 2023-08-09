@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination } from "@mui/material";
+import React from "react";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import { BSCSCAN_TX_URL, BSCSCAN_ADDRESS_URL } from "../../../constants";
 
 const TopTable = ({ headers, rows, name }) => {
@@ -13,17 +13,17 @@ const TopTable = ({ headers, rows, name }) => {
     to: "To",
   }
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  // const [page, setPage] = useState(0);
+  // const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   const renderTableCell = (header, value) => {
     let content = value;
@@ -61,7 +61,7 @@ const TopTable = ({ headers, rows, name }) => {
           ))}
         </TableBody>
       </Table>
-      <TablePagination
+      {/* <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
         count={rows.length}
@@ -69,7 +69,7 @@ const TopTable = ({ headers, rows, name }) => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      /> */}
     </TableContainer>
   );
 }

@@ -1,10 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  dappId: '',
-  dappName: '',
-  dappAddress: [],
-  dappImage: '',
+  dappId: [],
 }
 
 const dappSlice = createSlice({
@@ -12,17 +9,13 @@ const dappSlice = createSlice({
   initialState,
   reducers: {
     selectDapp: (state, action) => {
-      const { id, name, address, image } = action.payload;
-      state.dappId = id;
-      state.dappName = name;
-      state.dappAddress = address;
-      state.dappImage = image;
+      const { id } = action.payload;
+      if (!state.dappId.includes(id)) {
+        state.dappId.push(id);
+      }
     },
     clearDapp: (state) => {
-      state.dappId = '';
-      state.dappName = '';
-      state.dappAddress = [];
-      state.dappImage = '';
+      state.dappId = [];
     }
   }
 })

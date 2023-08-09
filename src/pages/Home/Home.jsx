@@ -59,9 +59,6 @@ export default function Home() {
 			dispatch(
 				selectDapp({
 					id: selectedDapp.id,
-					name: selectedDapp.name,
-					address: selectedDapp.address,
-					image: selectedDapp.image,
 				})
 			);
 		}
