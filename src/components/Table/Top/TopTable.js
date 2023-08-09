@@ -1,8 +1,16 @@
-import React, { useState } from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination } from "@mui/material";
+import React from "react";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import { BSCSCAN_TX_URL, BSCSCAN_ADDRESS_URL } from "../../../constants";
+import { useDispatch } from "react-redux";
+import { selectDapp } from "../../../features/dapp/dappSlice";
 
-const TopTable = ({ headers, rows, name }) => {
+const TopTable = ({ headers, rows, name, width }) => {
+  const dispatch = useDispatch();
+
+  const handleRowClickDappId = (id) => {
+    dispatch(selectDapp({ id }));
+  }
+
   const columnNames = {
     transaction_hash: 'Transaction Hash',
     value: 'Value',
@@ -11,19 +19,10 @@ const TopTable = ({ headers, rows, name }) => {
     number_of_transfers: 'Number of Transfers',
     from: "From",
     to: "To",
+    name: "Name",
+    image: "Image",
+    id: "ID",
   }
-
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
 
   const renderTableCell = (header, value) => {
     let content = value;
@@ -31,6 +30,8 @@ const TopTable = ({ headers, rows, name }) => {
       content = <a href={`${BSCSCAN_TX_URL}/${value}`} style={{ textDecoration: 'none', fontWeight: 'bold', color: 'black' }} target="_blank" rel="noopener noreferrer">{value}</a>;
     } else if (header === 'wallet') {
       content = <a href={`${BSCSCAN_ADDRESS_URL}/${value}`} style={{ textDecoration: 'none', fontWeight: 'bold', color: 'black' }} target="_blank" rel="noopener noreferrer">{value}</a>;
+    } else if (header === 'image') {
+      content = <img src={value} alt="Dapp Icon" style={{ width: '40px', height: '40px' }} />;
     }
 
     return (
@@ -43,7 +44,7 @@ const TopTable = ({ headers, rows, name }) => {
   return (
     <TableContainer component={Paper}>
       <h2 style={{ textAlign: 'center' }}>{name}</h2>
-      <Table sx={{ minWidth: '650px' }} aria-label="simple table">
+      <Table sx={{ width: width }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Rank</TableCell>
@@ -54,22 +55,24 @@ const TopTable = ({ headers, rows, name }) => {
         </TableHead>
         <TableBody>
           {rows.map((row, index) => (
-            <TableRow key={row.transaction_hash}>
+            <TableRow style={{
+              cursor: 'pointer',
+              transition: 'transform 0.3s, boxShadow 0.3s',
+            }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.03)';
+                e.currentTarget.style.boxShadow = '0px 4px 10px rgba(0, 0, 0, 0.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.boxShadow = 'none';
+              }} key={row.transaction_hash} onClick={() => handleRowClickDappId(row.id)}>
               <TableCell>#{index + 1}</TableCell>
               {headers.map((header) => renderTableCell(header, row[header]))}
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
     </TableContainer>
   );
 }

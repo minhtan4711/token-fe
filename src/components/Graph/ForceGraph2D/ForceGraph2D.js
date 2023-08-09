@@ -10,7 +10,7 @@ const DynamicGraph = ({ data }) => {
         const loadImages = async () => {
             const imagePromises = data.nodes.map(node => {
                 return new Promise((resolve, reject) => {
-                    if (node.group === 'DAPP' && node.image) {
+                    if (node.group.startsWith('DAPP_') && node.image) {
                         const img = new Image();
                         img.onload = () => resolve({ id: node.id, img });
                         img.onerror = reject;
@@ -32,8 +32,9 @@ const DynamicGraph = ({ data }) => {
         loadImages();
     }, [data.nodes]);
 
+
     const nodeVal = (node) => {
-        if (node.balance === 0) {
+        if (node.balance === 0 || node.balance < 1) {
             return 5;
         } else if (node.balance <= 1000) {
             return 10 + Math.ceil(Math.log(node.balance));
@@ -67,8 +68,8 @@ const DynamicGraph = ({ data }) => {
                 break;
         }
 
-        if (node.group === 'DAPP' && images[node.id]) {
-            const radius = nodeVal(node) * 2;
+        if (node.group.startsWith('DAPP_') && images[node.id]) {
+            const radius = nodeVal(node) * 1.5;
             ctx.save();
             ctx.beginPath();
             ctx.arc(node.x, node.y, radius, 0, Math.PI * 2, true);

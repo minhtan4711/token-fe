@@ -7,12 +7,15 @@ import PauseIcon from '@mui/icons-material/Pause';
 import IconButton from '@mui/material/IconButton';
 import RestartAltSharpIcon from '@mui/icons-material/RestartAltSharp';
 import { START_TIME, END_TIME, AN_HOUR } from "../../constants";
+import { useDispatch } from 'react-redux';
+import { removeDappPerTimestamp } from '../../features/dapp/dappSlice';
 
 export default function RangeSlider({ handleTimestampChange }) {
+    const dispatch = useDispatch();
+
     const [timestamp, setTimestamp] = useState(START_TIME)
     const [isPlaying, setIsPlaying] = useState(false)
     const timerRef = useRef(null)
-
 
     const anHourStep = AN_HOUR
     const startTimestamp = START_TIME
@@ -20,6 +23,7 @@ export default function RangeSlider({ handleTimestampChange }) {
 
     const handlePlayClick = () => {
         setIsPlaying(true);
+        dispatch(removeDappPerTimestamp());
     }
 
     const handlePauseClick = () => {
@@ -61,10 +65,12 @@ export default function RangeSlider({ handleTimestampChange }) {
     };
 
     const handleSliderChangeCommitted = (event, nextTimestamp) => {
+        dispatch(removeDappPerTimestamp());
         handleTimestampChange(nextTimestamp, nextTimestamp + anHourStep - 1);
     };
 
     const handleResetTimestamp = () => {
+        dispatch(removeDappPerTimestamp());
         setTimestamp(startTimestamp);
         setIsPlaying(false);
         handleTimestampChange(startTimestamp, startTimestamp + anHourStep - 1);

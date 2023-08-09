@@ -117,6 +117,7 @@ function TokenDetails() {
 					<div className="transfer-ranking">
 						{topTransfers && (
 							<TopTable
+								width={600}
 								name="Top Transfers"
 								headers={["transaction_hash", "value"]}
 								rows={topTransfers}
@@ -126,6 +127,7 @@ function TokenDetails() {
 					<div className="wallet-transfer-ranking">
 						{topWallets && (
 							<TopTable
+								width={800}
 								name="Top Wallets"
 								headers={["wallet", "number_of_transfers", "amount"]}
 								rows={topWallets}
