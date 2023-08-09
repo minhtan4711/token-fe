@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./TokenTransferTimeline.css";
 import Layout from "../../components/Layout";
 import Loading from "../../components/Loading/Loading";
+import TopTable from "../../components/Table/Top/TopTable";
 import RangeSlider from "../../components/TimeSlider/Slider";
 import DynamicGraph from "../../components/Graph/ForceGraph2D/ForceGraph2D";
 import RadarChart from "../../components/HighChart/RadarChart";
@@ -56,6 +57,16 @@ function TokenTransferTimeline() {
 			nodes: filteredNodes,
 			links: newFilteredData,
 		};
+	};
+
+	const formatDappsData = (data) => {
+		return data.map((dapp) => {
+			return {
+				id: dapp.id,
+				name: dapp.name,
+				image: dapp.image,
+			};
+		});
 	};
 
 	const initialRadarData = [1, 1, 1, 1, 1, 1, 1];
@@ -113,6 +124,7 @@ function TokenTransferTimeline() {
 	const [radarData, setRadarData] = useState(initialRadarData);
 	const [graphData, setGraphData] = useState(initialGraphData);
 	const [isLoading, setIsLoading] = useState(false);
+	const [dapps, setDapps] = useState([]);
 
 	useEffect(() => {
 		if (prevTimestamp !== null && nextTimestamp !== null) {
@@ -125,8 +137,18 @@ function TokenTransferTimeline() {
 					const responseGraph = await fetch(
 						`${API_URL}/graph-data/${address}?start_timestamp=${prevTimestamp}&end_timestamp=${nextTimestamp}&dapp_id=${dappId}`
 					);
+					const responseDapps = await fetch(
+						`${API_URL}/dapp-at-timestamp/${address}?start_timestamp=${prevTimestamp}&end_timestamp=${nextTimestamp}`
+					);
+
 					const dataRadar = await responseRadar.json();
 					const dataGraph = await responseGraph.json();
+					const dataDapps = await responseDapps.json();
+
+					if (dataDapps.length > 0) {
+						const newDataDapps = formatDappsData(dataDapps);
+						setDapps(newDataDapps);
+					}
 
 					if (dataGraph.length > 0) {
 						const newDataGraph = formatGraphData(dataGraph);
@@ -173,18 +195,30 @@ function TokenTransferTimeline() {
 							<RangeSlider handleTimestampChange={handleTimestampChange} />
 						</div>
 						{start_timestamp !== "" ? (
-							<div className="container-info">
-								<div className="radar-chart">
-									<RadarChart data={radarData} />
+							<>
+								<div className="container-table">
+									{dapps && (
+										<TopTable
+											width={200}
+											name="Dapps"
+											headers={["image", "id", "name"]}
+											rows={dapps}
+										/>
+									)}
 								</div>
-								<div className="force-graph">
-									<DynamicGraph
-										data={graphData}
-										width={width}
-										height={height}
-									/>
+								<div className="container-info">
+									<div className="radar-chart">
+										<RadarChart data={radarData} />
+									</div>
+									<div className="force-graph">
+										<DynamicGraph
+											data={graphData}
+											width={width}
+											height={height}
+										/>
+									</div>
 								</div>
-							</div>
+							</>
 						) : (
 							<h2 style={{ textAlign: "center", lineHeight: "2rem" }}>
 								Please click the play button to start the visualization.

@@ -2,7 +2,7 @@ import React from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import { BSCSCAN_TX_URL, BSCSCAN_ADDRESS_URL } from "../../../constants";
 
-const TopTable = ({ headers, rows, name }) => {
+const TopTable = ({ headers, rows, name, width }) => {
   const columnNames = {
     transaction_hash: 'Transaction Hash',
     value: 'Value',
@@ -11,19 +11,10 @@ const TopTable = ({ headers, rows, name }) => {
     number_of_transfers: 'Number of Transfers',
     from: "From",
     to: "To",
+    name: "Name",
+    image: "Image",
+    id: "ID",
   }
-
-  // const [page, setPage] = useState(0);
-  // const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (event) => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
 
   const renderTableCell = (header, value) => {
     let content = value;
@@ -31,6 +22,8 @@ const TopTable = ({ headers, rows, name }) => {
       content = <a href={`${BSCSCAN_TX_URL}/${value}`} style={{ textDecoration: 'none', fontWeight: 'bold', color: 'black' }} target="_blank" rel="noopener noreferrer">{value}</a>;
     } else if (header === 'wallet') {
       content = <a href={`${BSCSCAN_ADDRESS_URL}/${value}`} style={{ textDecoration: 'none', fontWeight: 'bold', color: 'black' }} target="_blank" rel="noopener noreferrer">{value}</a>;
+    } else if (header === 'image') {
+      content = <img src={value} alt="Dapp Icon" style={{ width: '40px', height: '40px' }} />;
     }
 
     return (
@@ -43,7 +36,7 @@ const TopTable = ({ headers, rows, name }) => {
   return (
     <TableContainer component={Paper}>
       <h2 style={{ textAlign: 'center' }}>{name}</h2>
-      <Table sx={{ minWidth: '650px' }} aria-label="simple table">
+      <Table sx={{ width: width }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Rank</TableCell>
