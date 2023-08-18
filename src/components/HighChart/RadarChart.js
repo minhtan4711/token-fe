@@ -32,7 +32,7 @@ function RadarChart({ data }) {
         'Number Of Dapp',
         'Number Of Holder',
         'Number Of Whale Wallet',
-        'Average Transfer Per Day',
+        'Average Transfer Per Hour',
         'Number Of Address'
       ],
       tickmarkPlacement: 'on',
