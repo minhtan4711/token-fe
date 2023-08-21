@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { format, fromUnixTime } from 'date-fns'
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
@@ -10,7 +10,7 @@ import { START_TIME, END_TIME, AN_HOUR } from "../../constants";
 import { useDispatch } from 'react-redux';
 import { removeDappPerTimestamp } from '../../features/dapp/dappSlice';
 
-export default function RangeSlider({ handleTimestampChange }) {
+function RangeSlider({ handleTimestampChange }) {
     const dispatch = useDispatch();
 
     const [timestamp, setTimestamp] = useState(START_TIME)
@@ -21,14 +21,14 @@ export default function RangeSlider({ handleTimestampChange }) {
     const startTimestamp = START_TIME
     const endTimestamp = END_TIME
 
-    const handlePlayClick = () => {
+    const handlePlayClick = useCallback(() => {
         setIsPlaying(true);
         dispatch(removeDappPerTimestamp());
-    }
+    }, [dispatch])
 
-    const handlePauseClick = () => {
+    const handlePauseClick = useCallback(() => {
         setIsPlaying(false);
-    }
+    }, [])
 
     useEffect(() => {
         if (isPlaying) {
@@ -54,7 +54,7 @@ export default function RangeSlider({ handleTimestampChange }) {
                 clearInterval(timerRef.current);
             }
         }
-    }, [isPlaying]);
+    }, [anHourStep, handleTimestampChange, isPlaying]);
 
     const handleFormatTimestamp = (timestamp) => {
         return format(fromUnixTime(timestamp), 'dd/MM/yyyy HH:mm');
@@ -115,3 +115,5 @@ export default function RangeSlider({ handleTimestampChange }) {
 
     );
 }
+
+export default React.memo(RangeSlider);
