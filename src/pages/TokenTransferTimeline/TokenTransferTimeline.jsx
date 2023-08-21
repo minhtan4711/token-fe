@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./TokenTransferTimeline.css";
 import Layout from "../../components/Layout";
 import Loading from "../../components/Loading/Loading";
@@ -93,33 +93,36 @@ function TokenTransferTimeline() {
 	const [prevTimestamp, setPrevTimestamp] = useState(null);
 	const [nextTimestamp, setNextTimestamp] = useState(null);
 
-	const handleTimestampChange = (prevTimestamp, nextTimestamp) => {
-		if (start_timestamp !== "" && end_timestamp !== "") {
-			dispatch(
-				clearTimestamp({
-					start_timestamp: prevTimestamp,
-					end_timestamp: nextTimestamp,
-				})
-			);
-			setPrevTimestamp(prevTimestamp);
-			setNextTimestamp(nextTimestamp);
-			dispatch(
-				selectTimestamp({
-					start_timestamp: prevTimestamp,
-					end_timestamp: nextTimestamp,
-				})
-			);
-		} else {
-			dispatch(
-				selectTimestamp({
-					start_timestamp: prevTimestamp,
-					end_timestamp: nextTimestamp,
-				})
-			);
-			setPrevTimestamp(prevTimestamp);
-			setNextTimestamp(nextTimestamp);
-		}
-	};
+	const handleTimestampChange = useCallback(
+		(prevTimestamp, nextTimestamp) => {
+			if (start_timestamp !== "" && end_timestamp !== "") {
+				dispatch(
+					clearTimestamp({
+						start_timestamp: prevTimestamp,
+						end_timestamp: nextTimestamp,
+					})
+				);
+				setPrevTimestamp(prevTimestamp);
+				setNextTimestamp(nextTimestamp);
+				dispatch(
+					selectTimestamp({
+						start_timestamp: prevTimestamp,
+						end_timestamp: nextTimestamp,
+					})
+				);
+			} else {
+				dispatch(
+					selectTimestamp({
+						start_timestamp: prevTimestamp,
+						end_timestamp: nextTimestamp,
+					})
+				);
+				setPrevTimestamp(prevTimestamp);
+				setNextTimestamp(nextTimestamp);
+			}
+		},
+		[dispatch, end_timestamp, start_timestamp]
+	);
 
 	const [radarData, setRadarData] = useState(initialRadarData);
 	const [graphData, setGraphData] = useState(initialGraphData);
